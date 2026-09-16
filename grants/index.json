@@ -1,0 +1,13 @@
+{
+  "protocol": "cwi.context-grant/1.0",
+  "updated_at": "2026-09-16T13:22:03.334Z",
+  "grants": [
+    {
+      "grant_id": "grt_01M2N6393WDXF05J7PRNNP28Y0",
+      "grant_hash": "sha256:aea0702c64a61a1685adb0dd4ce266a40b7c9e39990175b4a8fe85e96118a4e8",
+      "subject": "deploy:cwi-context-grants-v1",
+      "verdict": "VERIFIED",
+      "file": "grants/grt_01M2N6393WDXF05J7PRNNP28Y0.json"
+    }
+  ]
+}
