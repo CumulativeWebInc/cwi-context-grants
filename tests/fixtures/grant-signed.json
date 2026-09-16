@@ -1,0 +1,26 @@
+{
+  "protocol": "cwi.context-grant/1.0",
+  "grant_id": "grt_01J8ABCDEFGHJKMNPQRSTVWXYZ",
+  "action": {
+    "description": "deploy cwi-context-grants v1.0.0 (test fixture)",
+    "type": "deploy",
+    "content_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "content_ref": "fixtures"
+  },
+  "context": {
+    "model": "fixture-model",
+    "tools_available": [
+      "exec",
+      "read"
+    ],
+    "venue": "test-venue",
+    "assembled_at": "2026-09-16T13:00:00Z",
+    "expires_at": "2026-09-23T13:00:00Z",
+    "approver": "fixture approver",
+    "conversation_ref": "fixture"
+  },
+  "context_hash": "sha256:b5e312da203e7556714e0cd337613d434248ac570b4b48b2d127ee4cfe659c65",
+  "issuer": "Cumulative Web Inc",
+  "prev_hash": "GENESIS",
+  "signature": "FIXTURE-NOT-A-REAL-SIGNATURE"
+}
