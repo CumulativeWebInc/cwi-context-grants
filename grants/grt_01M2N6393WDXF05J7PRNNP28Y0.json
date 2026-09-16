@@ -1,0 +1,35 @@
+{
+  "protocol": "cwi.context-grant/1.0",
+  "grant_id": "grt_01M2N6393WDXF05J7PRNNP28Y0",
+  "action": {
+    "description": "Deploy CWI Context Hash Grants v1.0.0 to production (public repo CumulativeWebInc/cwi-context-grants, GitHub Pages).",
+    "type": "deploy",
+    "content_hash": "sha256:72d2c92cc411ac277c8646b354373b1cd11a0197eb6c286dc277ddeab24d118a",
+    "content_ref": "CumulativeWebInc/cwi-context-grants @ main — release manifest: 6 files"
+  },
+  "context": {
+    "model": "Muse Spark (muse-spark) — subagent 5225cdb3-7933-43d0-84b6-0b3d9d84ff03, spawned by KingCode (agent:MUSE_CWI)",
+    "tools_available": [
+      "muse.exec",
+      "muse.read",
+      "muse.write",
+      "muse.edit",
+      "subagent.spawn",
+      "browser.search",
+      "browser.open",
+      "process.*",
+      "tool_search.load_tool_namespace"
+    ],
+    "venue": "github-pages-deploy via GitHub Contents API + Git Data API, repo CumulativeWebInc/cwi-context-grants",
+    "assembled_at": "2026-09-16T13:22:00.955Z",
+    "expires_at": "2026-09-23T13:22:00.955Z",
+    "approver": "Cumulative Web Inc — KingCode autonomous-entity mandate (standing grant 2026-09-16: build/deploy without per-action approval; hard lines: no spending, no wallet signing, no publishing under Black’s name without exact-copy approval)",
+    "conversation_ref": "parent order 2026-09-16: build Context Hash Grants (#34); subagent session 5225cdb3-7933-43d0-84b6-0b3d9d84ff03",
+    "notes": "Dogfood grant #1: the deployment this grant approves is the Context Hash Grants v1.0.0 release itself — real files, real hashes, real context. (Settlement Prover was still building at grant time, so no deployment data was invented for it.)"
+  },
+  "context_hash": "sha256:4ab29cfd655a608afdb32059440d8065b9af6652449f679ede25481e52c5ceea",
+  "issuer": "Cumulative Web Inc",
+  "prev_hash": "GENESIS",
+  "signature": "vIX12kwT4/yqkrkoP39V1FlrCFLqzfEEZaJKHA6tXuCwpGcVaSseO7DkgeJ0fdipk8/Fs29rxZtJU2tupytzDA==",
+  "grant_hash": "sha256:aea0702c64a61a1685adb0dd4ce266a40b7c9e39990175b4a8fe85e96118a4e8"
+}
