@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Context Hash Grants — CWI approval leases</title>
+<meta name="description" content="Approval leases bound to grant context. Every approval binds the content hash AND the context it was given in — model, tools, venue, expiry — into one sealed, verifiable grant.">
+<meta property="og:title" content="Context Hash Grants — CWI">
+<meta property="og:description" content="Content hash binding is necessary but insufficient. Grants bind the context hash alongside.">
+<script src="https://cumulativewebinc.github.io/cwi-i18n/i18n.js" data-app="context-grants"></script>
+<script src="./grants.js"></script>
+<style>
+  :root { --bg:#0b0b10; --panel:#14141c; --line:#26262f; --gold:#e3b93c; --gold-dim:#9a7c26;
+          --ink:#f2f0e8; --mut:#a7a49a; --ok:#4ade80; --bad:#ff5d5d; --warn:#ff9f43; --info:#7cc7ff; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .wrap { max-width:960px; margin:0 auto; padding:20px 16px 64px; }
+  header.brand { display:flex; align-items:center; gap:12px; padding:8px 0 4px; }
+  .mark { width:40px; height:40px; border-radius:50%; border:2px solid var(--gold);
+          display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--gold); }
+  h1 { font-size:22px; margin:0; }
+  .sub { color:var(--mut); font-size:14px; margin:2px 0 0; }
+  .tabs { display:flex; gap:8px; margin:18px 0 0; }
+  .tab { border:1px solid var(--line); background:var(--panel); color:var(--mut); border-radius:10px 10px 0 0;
+         padding:10px 18px; font-size:14px; font-weight:700; cursor:pointer; border-bottom:none; }
+  .tab.active { color:var(--gold); background:#1a1a24; }
+  .panel { background:#1a1a24; border:1px solid var(--line); border-radius:0 12px 12px 12px; padding:18px; display:none; }
+  .panel.active { display:block; }
+  h2.sec { font-size:15px; color:var(--gold); margin:20px 0 10px; letter-spacing:.02em; }
+  h2.sec:first-child { margin-top:0; }
+  label { font-size:13px; color:var(--mut); display:block; margin:12px 0 6px; }
+  input[type=text], input[type=url], textarea, select { width:100%; background:#0e0e14; color:var(--ink);
+         border:1px solid var(--line); border-radius:10px; padding:11px; font-size:14px; font-family:inherit; }
+  textarea { min-height:70px; resize:vertical; }
+  .row { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+  button { cursor:pointer; border-radius:10px; border:1px solid var(--gold-dim);
+           background:var(--gold); color:#141414; font-weight:700; padding:10px 16px; font-size:14px; }
+  button.ghost { background:transparent; color:var(--gold); }
+  button.small { padding:7px 12px; font-size:12px; }
+  .card { background:#0e0e14; border:1px solid var(--gold-dim); border-radius:12px; padding:16px; margin-top:12px; }
+  .card h3 { margin:0 0 8px; font-size:15px; color:var(--gold); }
+  .card .field { font-size:13px; margin:6px 0; line-height:1.5; }
+  .card .k { color:var(--mut); }
+  .mono { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; word-break:break-all; }
+  .hashline { background:#14141c; border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-top:8px; }
+  .verdict { font-size:13px; font-weight:800; letter-spacing:.06em; padding:6px 14px; border-radius:20px; text-transform:uppercase; display:inline-block; }
+  .v-verified { background:#123f22; color:var(--ok); }
+  .v-tampered { background:#4a1212; color:var(--bad); }
+  .v-expired { background:#4a2c10; color:var(--warn); }
+  .check { font-size:13px; margin:6px 0; }
+  .check .pass { color:var(--ok); } .check .fail { color:var(--bad); }
+  .check .detail { color:var(--mut); font-size:12px; }
+  pre.jsonout { background:#0e0e14; border:1px solid var(--line); border-radius:10px;
+            padding:12px; font-size:11px; overflow-x:auto; max-height:380px; overflow-y:auto; margin-top:10px; }
+  .note { font-size:12px; color:var(--mut); margin-top:10px; line-height:1.6; }
+  .honest { margin-top:22px; font-size:13px; color:var(--mut); background:var(--panel);
+            border:1px solid var(--line); border-radius:10px; padding:14px; }
+  .honest b { color:var(--ink); }
+  footer { margin-top:36px; color:var(--mut); font-size:12px; text-align:center; line-height:1.8; }
+  footer a { color:var(--gold); }
+  .helpers { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:640px){ .helpers{ grid-template-columns:1fr; } }
+  .helper { background:#0e0e14; border:1px solid var(--line); border-radius:10px; padding:12px; }
+  .helper h4 { margin:0 0 8px; font-size:13px; color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand">
+    <div class="mark">C</div>
+    <div>
+      <h1 data-i18n="app.title">Context Hash Grants</h1>
+      <p class="sub" data-i18n="app.sub">Approval leases bound to grant context — content hash + context hash, sealed.</p>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" id="tabA" data-i18n="tab.assemble">Assemble</button>
+    <button class="tab" id="tabV" data-i18n="tab.verify">Verify</button>
+  </div>
+
+  <!-- ============ ASSEMBLE ============ -->
+  <div class="panel active" id="panelA">
+    <h2 class="sec" data-i18n="sec.action">1 · The action</h2>
+    <label data-i18n="f.action_desc">What is being approved</label>
+    <textarea id="a_desc" data-i18n-ph="f.action_desc_ph" placeholder="e.g. Deploy cwi-sonic-search v1.0.0 to production"></textarea>
+    <div class="row" style="gap:12px">
+      <div style="flex:1;min-width:160px">
+        <label data-i18n="f.action_type">Action type</label>
+        <select id="a_type">
+          <option value="deploy">deploy</option><option value="publish">publish</option>
+          <option value="payment">payment</option><option value="config-change">config-change</option>
+          <option value="submission">submission</option><option value="access-grant">access-grant</option>
+          <option value="other">other</option>
+        </select>
+      </div>
+      <div style="flex:2;min-width:220px">
+        <label data-i18n="f.content_ref">Content pointer (optional)</label>
+        <input type="text" id="a_ref" data-i18n-ph="f.content_ref_ph" placeholder="repo, URL, or manifest path">
+      </div>
+    </div>
+    <label data-i18n="f.content_hash">Content hash (sha256 of the exact bytes being approved)</label>
+    <input type="text" id="a_chash" class="mono" data-i18n-ph="f.content_hash_ph" placeholder="sha256:<64 hex>">
+
+    <div class="helpers" style="margin-top:12px">
+      <div class="helper">
+        <h4 data-i18n="hash.text_title">Compute from text</h4>
+        <textarea id="h_text" data-i18n-ph="hash.text_ph" placeholder="Paste the exact content…" style="min-height:56px"></textarea>
+        <div class="row"><button class="small ghost" id="b_htext" data-i18n="btn.hash_text">Hash this text</button></div>
+      </div>
+      <div class="helper">
+        <h4 data-i18n="hash.file_title">Compute from file</h4>
+        <div class="row"><button class="small ghost" id="b_hfile" data-i18n="btn.hash_file">Choose file &amp; hash</button>
+        <input type="file" id="h_file" style="display:none"></div>
+        <div class="note mono" id="h_file_out"></div>
+      </div>
+    </div>
+
+    <h2 class="sec" data-i18n="sec.context">2 · The context</h2>
+    <div class="row" style="gap:12px">
+      <div style="flex:1;min-width:200px">
+        <label data-i18n="f.model">Model / agent identity</label>
+        <input type="text" id="c_model" data-i18n-ph="f.model_ph" placeholder="e.g. muse-spark — agent:MUSE_CWI">
+      </div>
+      <div style="flex:1;min-width:200px">
+        <label data-i18n="f.venue">Venue (where the action executes)</label>
+        <input type="text" id="c_venue" data-i18n-ph="f.venue_ph" placeholder="e.g. github-pages-deploy via Contents API">
+      </div>
+    </div>
+    <label data-i18n="f.tools">Tools available at decision time (one per line)</label>
+    <textarea id="c_tools" data-i18n-ph="f.tools_ph" placeholder="exec&#10;read&#10;write" style="min-height:56px"></textarea>
+    <div class="row" style="gap:12px">
+      <div style="flex:1;min-width:200px">
+        <label data-i18n="f.convref">Conversation reference (optional)</label>
+        <input type="text" id="c_conv" data-i18n-ph="f.convref_ph" placeholder="Session / message ids">
+      </div>
+      <div style="flex:1;min-width:200px">
+        <label data-i18n="f.expiry">Approval lease expires</label>
+        <select id="c_exp">
+          <option value="1" data-i18n="f.expiry.1h">1 hour</option>
+          <option value="24" data-i18n="f.expiry.24h">24 hours</option>
+          <option value="168" selected data-i18n="f.expiry.7d">7 days</option>
+          <option value="720" data-i18n="f.expiry.30d">30 days</option>
+        </select>
+      </div>
+    </div>
+    <label data-i18n="f.approver">Approver (identity + authority basis)</label>
+    <input type="text" id="c_who" data-i18n-ph="f.approver_ph" placeholder="Who approves, and on what authority">
+    <label data-i18n="f.notes">Notes for the approver (optional)</label>
+    <textarea id="c_notes" data-i18n-ph="f.notes_ph" placeholder="" style="min-height:48px"></textarea>
+
+    <h2 class="sec" data-i18n="sec.card">3 · The approval card — exactly what gets bound</h2>
+    <div class="card" id="card"><div class="note" data-i18n="card.empty">Fill in the action and context — the card renders live here.</div></div>
+
+    <div class="row">
+      <button id="b_gen" data-i18n="btn.generate">Generate grant package</button>
+      <button class="ghost" id="b_copy" data-i18n="btn.copy" style="display:none">Copy JSON</button>
+      <button class="ghost" id="b_dl" data-i18n="btn.download" style="display:none">Download</button>
+    </div>
+    <pre class="jsonout" id="pkg_out" style="display:none"></pre>
+    <div class="note" data-i18n="sign.note">Signing happens with the CWI offline key — never in the browser. Take the package to <span class="mono">sign-grants.js</span>, or request a signature via hp@cumulativeweb.com.</div>
+  </div>
+
+  <!-- ============ VERIFY ============ -->
+  <div class="panel" id="panelV">
+    <h2 class="sec" data-i18n="verify.title">Verify a grant</h2>
+    <textarea id="v_in" data-i18n-ph="verify.ph" placeholder="Paste a grant record (JSON)…" style="min-height:120px"></textarea>
+    <div class="row"><button id="b_verify" data-i18n="btn.verify">Verify</button></div>
+    <div id="v_out" style="margin-top:14px"><div class="note" data-i18n="verify.empty">Paste a grant record above, or open a ?grant=&lt;id&gt; link.</div></div>
+
+    <div class="honest">
+      <b data-i18n="honest.title">Honest limits.</b>
+      <span data-i18n="honest.body">A grant binds the recorded context, not the universe — it is only as complete as what was put in. Hash verification proves the package is intact and unexpired; Ed25519 signature verification (verify-grant.js, Node) proves CWI sealed it. A VERIFIED grant does not prove the action was wise — only that this exact content, in this exact recorded context, was approved before expiry.</span>
+    </div>
+  </div>
+
+  <footer>
+    <span data-i18n="footer.note">CWI Context Hash Grants · cwi.context-grant/1.0 · trust fabric companion</span><br>
+    <a href="./schema/grants.schema.json">grants.schema.json</a> ·
+    <a href="./grants/index.json">grants/index.json</a> ·
+    <a href="./verify-grant.js">verify-grant.js</a> ·
+    <a href="https://cumulativewebinc.github.io/cwi-trust-log/">trust log</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var G = window.CWIGrants;
+  function t(k){ return (window.CWI18n && CWI18n.t) ? CWI18n.t(k) : null; }
+  function $(id){ return document.getElementById(id); }
+
+  // tabs
+  $('tabA').onclick = function(){ show('A'); };
+  $('tabV').onclick = function(){ show('V'); };
+  function show(which){
+    $('tabA').classList.toggle('active', which==='A');
+    $('tabV').classList.toggle('active', which==='V');
+    $('panelA').classList.toggle('active', which==='A');
+    $('panelV').classList.toggle('active', which==='V');
+  }
+
+  function val(id){ return $(id).value.trim(); }
+  function readForm(){
+    var tools = val('c_tools').split('\n').map(function(s){return s.trim();}).filter(Boolean);
+    var hours = parseInt($('c_exp').value, 10) || 168;
+    var now = new Date();
+    return {
+      action: { description: val('a_desc'), type: $('a_type').value,
+                content_hash: val('a_chash'), content_ref: val('a_ref') || undefined },
+      context: { model: val('c_model'), tools_available: tools, venue: val('c_venue'),
+                 conversation_ref: val('c_conv') || undefined,
+                 assembled_at: now.toISOString(),
+                 expires_at: new Date(now.getTime() + hours*3600*1000).toISOString(),
+                 approver: val('c_who'), notes: val('c_notes') || undefined }
+    };
+  }
+
+  // live approval card
+  var fields = ['a_desc','a_type','a_ref','a_chash','c_model','c_tools','c_venue','c_conv','c_exp','c_who','c_notes'];
+  fields.forEach(function(id){ $(id).addEventListener('input', renderCard); $(id).addEventListener('change', renderCard); });
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function renderCard(){
+    var f = readForm(), card = $('card');
+    if(!f.action.description || !/^sha256:[0-9a-f]{64}$/.test(f.action.content_hash)){
+      card.innerHTML = '<div class="note">' + esc(t('card.empty') || 'Fill in the action and a valid sha256 content hash — the card renders live here.') + '</div>';
+      return;
+    }
+    var ch = G.computeContextHash(f.action, f.context);
+    var html = '<h3>' + esc(f.action.description) + '</h3>';
+    html += '<div class="field"><span class="k">type:</span> ' + esc(f.action.type) + '</div>';
+    html += '<div class="field"><span class="k">content_hash:</span> <span class="mono">' + esc(f.action.content_hash) + '</span></div>';
+    if(f.action.content_ref) html += '<div class="field"><span class="k">ref:</span> ' + esc(f.action.content_ref) + '</div>';
+    html += '<div class="field"><span class="k">model:</span> ' + esc(f.context.model || '—') + '</div>';
+    html += '<div class="field"><span class="k">tools:</span> ' + esc(f.context.tools_available.join(', ') || '—') + '</div>';
+    html += '<div class="field"><span class="k">venue:</span> ' + esc(f.context.venue || '—') + '</div>';
+    html += '<div class="field"><span class="k">approver:</span> ' + esc(f.context.approver || '—') + '</div>';
+    html += '<div class="field"><span class="k">lease:</span> ' + esc(f.context.assembled_at) + ' → ' + esc(f.context.expires_at) + '</div>';
+    html += '<div class="hashline"><span class="k">context_hash:</span><br><span class="mono">' + esc(ch) + '</span></div>';
+    html += '<div class="note">' + esc(t('card.bound') || 'This card is what the context hash binds. Nothing else.') + '</div>';
+    card.innerHTML = html;
+  }
+
+  // hash helpers
+  $('b_htext').onclick = function(){
+    var s = val('h_text');
+    if(!s) return;
+    $('a_chash').value = 'sha256:' + G.sha256hex(s);
+    renderCard();
+  };
+  $('b_hfile').onclick = function(){ $('h_file').click(); };
+  $('h_file').addEventListener('change', function(){
+    var f = $('h_file').files[0]; if(!f) return;
+    var r = new FileReader();
+    r.onload = function(){
+      var bytes = new Uint8Array(r.result), hx = '';
+      var d = G.sha256Bytes(bytes);
+      for(var i=0;i<d.length;i++){ var x=d[i].toString(16); hx += x.length===1?'0'+x:x; }
+      $('a_chash').value = 'sha256:' + hx;
+      $('h_file_out').textContent = f.name + ' → sha256:' + hx.slice(0,16) + '…';
+      renderCard();
+    };
+    r.readAsArrayBuffer(f);
+  });
+
+  // generate package
+  var lastPkg = null;
+  $('b_gen').onclick = function(){
+    var f = readForm();
+    var errs = [];
+    if(!f.action.description) errs.push('action description');
+    if(!/^sha256:[0-9a-f]{64}$/.test(f.action.content_hash)) errs.push('valid content hash');
+    if(!f.context.model) errs.push('model');
+    if(!f.context.venue) errs.push('venue');
+    if(!f.context.approver) errs.push('approver');
+    if(errs.length){ alert('Missing: ' + errs.join(', ')); return; }
+    lastPkg = G.assembleGrant(f.action, f.context);
+    $('pkg_out').style.display = 'block';
+    $('pkg_out').textContent = JSON.stringify(lastPkg, null, 2);
+    $('b_copy').style.display = ''; $('b_dl').style.display = '';
+    renderCard();
+  };
+  $('b_copy').onclick = function(){
+    if(lastPkg) navigator.clipboard.writeText(JSON.stringify(lastPkg, null, 2));
+  };
+  $('b_dl').onclick = function(){
+    if(!lastPkg) return;
+    var b = new Blob([JSON.stringify(lastPkg, null, 2)], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(b); a.download = lastPkg.grant_id + '.unsigned.json'; a.click();
+  };
+
+  // verify
+  function renderVerdict(grant){
+    var v = G.verifyGrant(grant), out = $('v_out'), html = '';
+    var cls = v.verdict==='VERIFIED' ? 'v-verified' : (v.verdict==='EXPIRED' ? 'v-expired' : 'v-tampered');
+    var label = t('v.'+v.verdict.toLowerCase()) || v.verdict;
+    html += '<span class="verdict ' + cls + '">' + esc(label) + '</span>';
+    html += '<div style="margin-top:10px"><b>' + esc(t('v.checks') || 'Checks') + '</b></div>';
+    v.checks.forEach(function(c){
+      html += '<div class="check"><span class="' + (c.pass?'pass':'fail') + '">' + (c.pass?'✓':'✗') + '</span> ' +
+              esc(c.name) + '<div class="detail mono">' + esc(c.detail) + '</div></div>';
+    });
+    if(grant.grant_id) html += '<div class="note mono">grant_id: ' + esc(grant.grant_id) + '</div>';
+    out.innerHTML = html;
+  }
+  $('b_verify').onclick = function(){
+    try {
+      var g = JSON.parse(val('v_in'));
+      renderVerdict(g);
+    } catch(e){ $('v_out').innerHTML = '<div class="note">Invalid JSON: ' + esc(e.message) + '</div>'; }
+  };
+
+  // ?grant= deep link
+  var m = /[?&]grant=([^&]+)/.exec(location.search);
+  if(m){
+    show('V');
+    fetch('./grants/' + encodeURIComponent(m[1]) + '.json')
+      .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(renderVerdict)
+      .catch(function(e){ $('v_out').innerHTML = '<div class="note">Could not load grant: ' + esc(e.message) + '</div>'; });
+  }
+
+  renderCard();
+})();
+</script>
+</body>
+</html>
