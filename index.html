@@ -17,7 +17,7 @@
          font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
   .wrap { max-width:960px; margin:0 auto; padding:20px 16px 64px; }
   header.brand { display:flex; align-items:center; gap:12px; padding:8px 0 4px; }
-  .mark { width:40px; height:40px; border-radius:50%; border:2px solid var(--gold);
+  .mark { width:44px; height:44px; border-radius:50%; border:2px solid var(--gold); object-fit:cover;
           display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--gold); }
   h1 { font-size:22px; margin:0; }
   .sub { color:var(--mut); font-size:14px; margin:2px 0 0; }
@@ -64,11 +64,42 @@
   .helper { background:#0e0e14; border:1px solid var(--line); border-radius:10px; padding:12px; }
   .helper h4 { margin:0 0 8px; font-size:13px; color:var(--ink); }
 </style>
+<link rel="canonical" href="https://cumulativewebinc.github.io/cwi-context-grants/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cumulative Web Inc">
+<meta property="og:url" content="https://cumulativewebinc.github.io/cwi-context-grants/">
+<meta property="og:image" content="https://cumulativewebinc.github.io/cwi-context-grants/brand/logo.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Context Hash Grants — Cumulative Web Inc">
+<meta name="twitter:description" content="Approval leases bound to grant context — every approval seals content hash + context hash, Ed25519-signed and hash-chained.">
+<meta name="twitter:image" content="https://cumulativewebinc.github.io/cwi-context-grants/brand/logo.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Context Hash Grants",
+  "url": "https://cumulativewebinc.github.io/cwi-context-grants/",
+  "description": "Approval leases bound to grant context \u2014 every approval seals content hash + context hash, Ed25519-signed and hash-chained.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "Cumulative Web Inc",
+    "url": "https://cumulativeweb.com"
+  }
+}
+</script>
 </head>
 <body>
 <div class="wrap">
   <header class="brand">
-    <div class="mark">C</div>
+    <img class="mark" src="brand/logo.jpg" alt="Cumulative Web Inc">
     <div>
       <h1 data-i18n="app.title">Context Hash Grants</h1>
       <p class="sub" data-i18n="app.sub">Approval leases bound to grant context — content hash + context hash, sealed.</p>
@@ -175,7 +206,17 @@
     </div>
   </div>
 
-  <footer>
+  
+<section class="os-cta" style="margin:36px 0 8px;padding:26px 20px;border:1px solid #e8b23a;border-radius:12px;text-align:center;background:rgba(232,178,58,.05)">
+  <h2 style="margin:0 0 8px;font-size:20px">Try Context Hash Grants live</h2>
+  <p style="margin:0 0 16px;font-size:14px;opacity:.85">Approval leases bound to grant context — every approval seals content hash + context hash, Ed25519-signed and hash-chained.</p>
+  <p style="margin:0;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <a href="https://cumulativewebinc.github.io/cwi-context-grants/?grant=grt_01M2N6393WDXF05J7PRNNP28Y0" style="display:inline-block;background:#e8b23a;color:#111;font-weight:700;text-decoration:none;padding:11px 22px;border-radius:8px">Try it: verify a real signed grant</a>
+    <a href="https://cumulativewebinc.github.io/cwi-trust-log/" style="display:inline-block;color:#fff;text-decoration:none;padding:11px 22px;border-radius:8px;border:1px solid #888">Read the trust-log companion</a>
+  </p>
+</section>
+
+<footer>
     <span data-i18n="footer.note">CWI Context Hash Grants · cwi.context-grant/1.0 · trust fabric companion</span><br>
     <a href="./schema/grants.schema.json">grants.schema.json</a> ·
     <a href="./grants/index.json">grants/index.json</a> ·

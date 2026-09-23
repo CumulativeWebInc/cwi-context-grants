@@ -1,0 +1,28 @@
+# Context Hash Grants
+> Approval leases bound to grant context — every approval seals content hash + context hash, Ed25519-signed and hash-chained.
+
+Approval ceremony: assemble an action + full context envelope, compute a SHA-256 context hash over canonical JSON, sign offline with the CWI Ed25519 key, publish hash-chained. Verify tab recomputes both hashes: VERIFIED / TAMPERED / EXPIRED. Additive only — existing grants are never invalidated.
+
+## Live
+- App: https://cumulativewebinc.github.io/cwi-context-grants/
+- Try it: https://cumulativewebinc.github.io/cwi-context-grants/?grant=grt_01M2N6393WDXF05J7PRNNP28Y0
+
+## Features
+- Pure-JS SHA-256 (bit-identical browser + Node)
+- Offline Ed25519 signing (key off-repo)
+- Hash-chained grant registry
+- ?grant=<id> deep links
+- verify-grant.js zero-trust Node verifier
+- cwi.context-grant/1.0 schema
+- 26/26 tests
+
+## Machine-readable
+- verify_grant: https://cumulativewebinc.github.io/cwi-context-grants/?grant=grt_01M2N6393WDXF05J7PRNNP28Y0
+- registry: https://cumulativewebinc.github.io/cwi-context-grants/grants/index.json
+- public_key: https://cumulativewebinc.github.io/cwi-context-grants/keys/ed25519.pub
+
+## Honest limits
+A grant binds the recorded context, not the universe. VERIFIED proves this exact content in this exact context was approved before expiry — not that the action was wise.
+
+## Provider
+Cumulative Web Inc — hp@cumulativeweb.com

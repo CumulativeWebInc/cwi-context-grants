@@ -1,0 +1,29 @@
+{
+  "day": "2026-09-23",
+  "id": "os-retrofit-19",
+  "type": "os-retrofit",
+  "app": "Context Hash Grants",
+  "url": "https://cumulativewebinc.github.io/cwi-context-grants/",
+  "media_files": [
+    "https://cumulativewebinc.github.io/cwi-context-grants/brand/logo.jpg"
+  ],
+  "caption": "Context Hash Grants \u2014 Approval leases bound to grant context \u2014 every approval seals content hash + context hash, Ed25519-signed and hash-chained. Try it: https://cumulativewebinc.github.io/cwi-context-grants/?grant=grt_01M2N6393WDXF05J7PRNNP28Y0",
+  "hashtags": [
+    "CumulativeWebInc",
+    "AgentDeck",
+    "AIAgents",
+    "OpenSource"
+  ],
+  "threads_text": "Context Hash Grants is live from Cumulative Web Inc: Approval leases bound to grant context \u2014 every approval seals content hash + context hash, Ed25519-signed and hash-chained. https://cumulativewebinc.github.io/cwi-context-grants/?grant=grt_01M2N6393WDXF05J7PRNNP28Y0",
+  "post_order": 1,
+  "platform_targets": [
+    "threads",
+    "x",
+    "instagram"
+  ],
+  "cta": {
+    "label": "Try it: verify a real signed grant",
+    "url": "https://cumulativewebinc.github.io/cwi-context-grants/?grant=grt_01M2N6393WDXF05J7PRNNP28Y0"
+  },
+  "honest_limits": "A grant binds the recorded context, not the universe. VERIFIED proves this exact content in this exact context was approved before expiry \u2014 not that the action was wise."
+}

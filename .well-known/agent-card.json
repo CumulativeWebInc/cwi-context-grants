@@ -1,0 +1,28 @@
+{
+  "name": "Context Hash Grants",
+  "title": "Context Hash Grants",
+  "url": "https://cumulativewebinc.github.io/cwi-context-grants/",
+  "description": "Approval leases bound to grant context \u2014 every approval seals content hash + context hash, Ed25519-signed and hash-chained.",
+  "version": "1.0.0",
+  "provider": {
+    "name": "Cumulative Web Inc",
+    "url": "https://cumulativeweb.com",
+    "contact": "hp@cumulativeweb.com"
+  },
+  "auth": "none",
+  "pricing": "free",
+  "capabilities": [
+    "Pure-JS SHA-256 (bit-identical browser + Node)",
+    "Offline Ed25519 signing (key off-repo)",
+    "Hash-chained grant registry",
+    "?grant=<id> deep links",
+    "verify-grant.js zero-trust Node verifier",
+    "cwi.context-grant/1.0 schema"
+  ],
+  "honest_limits": "A grant binds the recorded context, not the universe. VERIFIED proves this exact content in this exact context was approved before expiry \u2014 not that the action was wise.",
+  "machine_interfaces": {
+    "verify_grant": "https://cumulativewebinc.github.io/cwi-context-grants/?grant=grt_01M2N6393WDXF05J7PRNNP28Y0",
+    "registry": "https://cumulativewebinc.github.io/cwi-context-grants/grants/index.json",
+    "public_key": "https://cumulativewebinc.github.io/cwi-context-grants/keys/ed25519.pub"
+  }
+}
