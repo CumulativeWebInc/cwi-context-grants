@@ -1,0 +1,14 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Context Hash Grants (#35)",
+  "url": "https://cumulativewebinc.github.io/cwi-context-grants/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "author": {
+    "@type": "Organization",
+    "name": "Cumulative Web Inc",
+    "url": "https://cumulativeweb.com/"
+  },
+  "description": "Approval leases bound to grant context: content and context hashes sealed, Ed25519-signed, and hash-chained."
+}
