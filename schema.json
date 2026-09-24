@@ -10,5 +10,6 @@
     "name": "Cumulative Web Inc",
     "url": "https://cumulativeweb.com/"
   },
-  "description": "Approval leases bound to grant context: content and context hashes sealed, Ed25519-signed, and hash-chained."
+  "description": "Approval leases bound to grant context: content and context hashes sealed, Ed25519-signed, and hash-chained.",
+  "schema_version": "1.0.0"
 }
